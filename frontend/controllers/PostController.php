@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\Article;
 use common\models\CatModel;
+use common\models\Comment;
 use common\models\PostModel;
 use frontend\controllers\base\BaseController;
 use frontend\models\PostForm;
@@ -31,7 +32,20 @@ class PostController extends BaseController
     {
 
         $post = PostModel::find()->where('id=:id',[":id"=>$id])->one();
-        return $this->render('view',["post"=>$post]);
+        $user = Yii::$app->getUser();
+        $comments = Comment::find()->where('post_id=:id',[":id"=>$id])->all();
+
+        $commentForm = new Comment();
+        if($commentForm->load(Yii::$app->request->post()))
+        {
+            $comment = new Comment();
+            $comment->comment = $commentForm->comment;
+            $comment->post_id = $id;
+            $comment->save();
+            return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm]);
+
+        }
+        return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm]);
 
     }
 
@@ -54,4 +68,6 @@ class PostController extends BaseController
         return $this->render('category',['post'=>$post]);
 
     }
+
+
 }

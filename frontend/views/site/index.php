@@ -72,15 +72,20 @@ $this->title = '主页';
     <div class="col-lg-7">
         <?php foreach ($category as $cat): ?>
             <div>
-                <a href=<?=Url::to(['post/category','cat_id'=>$cat->id])?>><?= $cat->name ?></a>
+                <a href=<?=Url::to(['post/category','cat_id'=>$cat->id])?>><?= $cat->name ?><br></a>
 
 
                 <?php foreach ($post as $item)
                 {
                     if ($item->cat_id == $cat->id){ ?>
-                        <ul class="nav nav-pills">
-                            <li role="presentation"><a class="nav nav-pills nav-stacked" href=<?=Url::to(['post/view', 'id' => $item->id]) ?>><?= $item->summary ?></a></li>
-                        </ul>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <ul class="nav nav-pills">
+                                    <li role="presentation"><a class="nav nav-pills nav-stacked" href=<?=Url::to(['post/view', 'id' => $item->id]) ?>><?= $item->summary ?></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
                 <?php } }?>
             </div>
         <?php endforeach;?>
