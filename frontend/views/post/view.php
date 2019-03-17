@@ -8,10 +8,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm; ?>
-<p><?= $post->content ?></p>
-
 
 <div class="content">
+    <p><?= $post->content ?></p>
+</div>
+
+<?php if(!$user->getIsGuest()){?>
+<div class="comment_form">
 
     <?php $form = ActiveForm::begin(['id'=>'comment','action'=>['post/view','id'=>$post->id],'method'=>'post']); ?>
 
@@ -22,11 +25,13 @@ use yii\widgets\ActiveForm; ?>
         </div>
 
     <?php ActiveForm::end(); ?>
-    <div>
-        <?php foreach ($comments as $comment):?>
-            <p><?= $comment->comment ?></p>
-            <p><?= $user->id ?></p>
-        <?php endforeach;?>
-    </div>
 
+</div>
+<?php }?>
+
+<div>
+    <?php foreach ($comments as $comment):?>
+        <p><?= $comment->user_id ?></p>
+        <p><?= $comment->comment ?></p>
+    <?php endforeach;?>
 </div>

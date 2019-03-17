@@ -13,9 +13,12 @@ use common\models\CatModel;
 use common\models\Comment;
 use common\models\PostModel;
 use frontend\controllers\base\BaseController;
+
+use frontend\models\CommentForm;
 use frontend\models\PostForm;
 use Yii;
 use yii\data\Pagination;
+use yii\db\Exception;
 
 class PostController extends BaseController
 {
@@ -33,19 +36,31 @@ class PostController extends BaseController
 
         $post = PostModel::find()->where('id=:id',[":id"=>$id])->one();
         $user = Yii::$app->getUser();
+
         $comments = Comment::find()->where('post_id=:id',[":id"=>$id])->all();
 
-        $commentForm = new Comment();
-        if($commentForm->load(Yii::$app->request->post()))
+        $commentForm = new CommentForm();
+        $test = 0;
+        if($commentForm->load(Yii::$app->request->post()) && $commentForm->validate())
         {
-            $comment = new Comment();
+            /*$comment = new Comment();
             $comment->comment = $commentForm->comment;
             $comment->post_id = $id;
-            $comment->save();
-            return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm]);
+            $comment->save();*/
+
+            try {
+                Yii::$app->db->createCommand()->insert('comment', [
+                    'post_id' => $id,
+                    'user_id'=> $user->id,
+                    'comment' => $commentForm->comment,
+                ])->execute();
+                $comments = Comment::find()->where('post_id=:id',[":id"=>$id])->all();
+            } catch (Exception $e) {
+            }
+            return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm,'test'=>$test]);
 
         }
-        return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm]);
+        return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm,'test'=>$test+1]);
 
     }
 
