@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-use yii\bootstrap\Html;
+use yii\bootstrap\Carousel;use yii\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->title = '主页';
@@ -56,6 +56,7 @@ $this->title = '主页';
 </div>-->
 
 
+
 <div class="row">
     <div class="col-lg-3">
         <form class="d-flex md-3">
@@ -70,6 +71,22 @@ $this->title = '主页';
     </div>
 
     <div class="col-lg-7">
+        <div>
+        <?php try {
+            echo Carousel::widget([
+                'items' =>[
+                    '<a href="index.php?r=post%2Fview&id=1"><img src="http://localhost/advanced/frontend/images/1.jpg" alt="test"/></a>',                // equivalent to the above
+                ['content' => '<img src="http://localhost/advanced/frontend/images/2.jpg" alt="test"/>'],
+                // the item contains both the image and the caption
+                [
+                    'content' => '<a href="https://baidu.com"><img src="http://localhost/advanced/frontend/images/3.jpg" alt="test"/></a>',
+                    'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
+                ],
+            ]
+            ]);
+        } catch (Exception $e) {
+        } ?>
+        </div>
         <?php foreach ($category as $cat): ?>
             <div>
                 <a href=<?=Url::to(['post/category','cat_id'=>$cat->id])?>><?= $cat->name ?><br></a>
@@ -93,10 +110,19 @@ $this->title = '主页';
     </div>
 
     <div class="col-lg-2">
-        <p>友情链接</p>
-        <a>1</a>
-        <a>2</a>
-        <a>3</a>
-        <a>4</a>
+        <div>
+            <p>最新评论</p>
+            <?php foreach ($all_comments as $comment): ?>
+            <p><?=$comment->comment?></p>
+            <?php endforeach;?>
+        </div>
+        <div>
+            <p>友情链接</p>
+            <a>1</a>
+            <a>2</a>
+            <a>3</a>
+            <a>4</a>
+        </div>
+
     </div>
 </div>

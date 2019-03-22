@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Category;
+use common\models\Comment;
 use common\models\PostModel;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -79,8 +80,11 @@ class SiteController extends Controller
 
         $post = PostModel::find()->all();
 
+        $all_comments = Comment::find()->all();
 
-        return $this->render('index',["category" => $category,"post"=>$post]);
+
+
+        return $this->render('index',["category" => $category,"post"=>$post, "all_comments" => $all_comments]);
     }
 
     /**
