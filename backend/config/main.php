@@ -11,7 +11,14 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'redactor' => [
+            'class' =>'yii\redactor\RedactorModule',
+            'uploadDir' =>'uploads',
+            'uploadUrl' =>'http://localhost/advanced/backend/web/uploads',
+            'imageAllowExtensions'=>['jpg','png','gif']
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -47,4 +54,5 @@ return [
         */
     ],
     'params' => $params,
+
 ];

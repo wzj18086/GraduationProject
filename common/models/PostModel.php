@@ -50,16 +50,16 @@ class PostModel extends BaseModel
     public function attributeLabels()
     {
         return [
-            'title' => 'Title',
-            'summary' => 'Summary',
-            'content' => 'Content',
-            'label_img' => 'Label Img',
-            'cat_id' => 'Cat ID',
-            'user_id' => 'User ID',
-            'user_name' => 'User Name',
-            'is_valid' => 'Is Valid',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'title' => '标题',
+            'summary' => '概况',
+            'content' => '内容',
+            'label_img' => '标签图',
+            'cat_id' => '分类ID',
+            'user_id' => '用户ID',
+            'user_name' => '用户名',
+            'is_valid' => '是否可用',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
             'id' => 'ID',
         ];
     }

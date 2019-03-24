@@ -35,16 +35,23 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
+    $LeftmenuItems = [
         ['label' => '主页', 'url' => ['/site/index']],
-        ['label' => '文章', 'url' => ['/post/index']],
-        ['label' => '联系', 'url' => ['/site/contact']],
+        ['label' => '安装资源', 'url' => ['/post/index']],
+        ['label' => '案例教程', 'url' => ['/site/contact']],
+        ['label' => '数据购买', 'url' => ['/site/contact']],
     ];
+
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => $LeftmenuItems,
+    ]);
+
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '注册', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
+        $RightmenuItems[] = ['label' => '注册', 'url' => ['/site/signup']];
+        $RightmenuItems[] = ['label' => '登录', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
+        $RightmenuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -55,7 +62,7 @@ AppAsset::register($this);
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
+        'items' => $RightmenuItems,
     ]);
     NavBar::end();
     ?>

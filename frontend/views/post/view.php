@@ -7,8 +7,12 @@
  */
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm; ?>
+use yii\widgets\ActiveForm;
 
+$this->params['breadcrumbs'][] = ['label'=>$cat->name,'url'=>'index.php?r=post%2Fcategory&cat_id='.$cat->id];
+$this->params['breadcrumbs'][] = $post->title;
+?>
+<link rel="stylesheet" type="text/css" href="assets/site.css" />
 <div class="content">
     <p><?= $post->content ?></p>
 </div>
@@ -27,11 +31,19 @@ use yii\widgets\ActiveForm; ?>
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php }else {?>
+    <div>
+        <b>请<a href="index.php?r=site%2Flogin">登陆</a>或<a href="index.php?r=site%2Fsignup">注册</a>后进行评论</b>
+    </div>
 <?php }?>
-
 <div>
+
+    <h3>评论区</h3>
     <?php foreach ($comments as $comment):?>
-        <p><?= $comment->user_id ?></p>
-        <p><?= $comment->comment ?></p>
+    <div class="comment">
+        <?= $user_array[$comment->user_id].":  "?>
+        <?= $comment->comment ?>
+    </div>
+
     <?php endforeach;?>
 </div>

@@ -9,9 +9,11 @@
 namespace frontend\controllers;
 
 use common\models\Article;
+use common\models\Category;
 use common\models\CatModel;
 use common\models\Comment;
 use common\models\PostModel;
+use common\models\User;
 use frontend\controllers\base\BaseController;
 
 use frontend\models\CommentForm;
@@ -37,15 +39,17 @@ class PostController extends BaseController
         $user = Yii::$app->getUser();
 
         $comments = Comment::find()->where('post_id=:id',[":id"=>$id])->all();
-
+        $user_info = User::find()->all();
+        $user_array = array();
+        $cat = Category::find()->where('id=:id',[':id'=>$post->cat_id])->one();
+        foreach ($user_info as $item)
+        {
+            $user_array[$item->id] = $item->username;
+        }
         $commentForm = new CommentForm();
-        $test = 0;
+
         if($commentForm->load(Yii::$app->request->post()) && $commentForm->validate())
         {
-            /*$comment = new Comment();
-            $comment->comment = $commentForm->comment;
-            $comment->post_id = $id;
-            $comment->save();*/
 
             try {
                 Yii::$app->db->createCommand()->insert('comment', [
@@ -56,10 +60,24 @@ class PostController extends BaseController
                 $comments = Comment::find()->where('post_id=:id',[":id"=>$id])->all();
             } catch (Exception $e) {
             }
-            return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm,'test'=>$test]);
+            return $this->render('view',[
+                "post"=>$post ,
+                'comments'=>$comments,
+                'user'=>$user ,
+                'commentForm'=>$commentForm,
+                "user_array"=>$user_array,
+                "cat"=>$cat
+            ]);
 
         }
-        return $this->render('view',["post"=>$post ,'comments'=>$comments,'user'=>$user ,'commentForm'=>$commentForm,'test'=>$test+1]);
+        return $this->render('view',[
+            "post"=>$post ,
+            'comments'=>$comments,
+            'user'=>$user ,
+            'commentForm'=>$commentForm,
+            "user_array"=>$user_array,
+            'cat'=>$cat
+            ]);
 
     }
 
@@ -79,7 +97,11 @@ class PostController extends BaseController
     public function actionCategory($cat_id)
     {
         $post = PostModel::find()->where('cat_id=:cat_id',[":cat_id"=>$cat_id])->all();
-        return $this->render('category',['post'=>$post]);
+        $cat = Category::find()->where('id=:cat_id',[":cat_id"=>$cat_id])->one();
+        return $this->render('category',[
+            'post'=>$post,
+            'cat'=>$cat
+        ]);
 
     }
 

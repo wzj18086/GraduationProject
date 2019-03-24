@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Carousel;
 use common\models\Category;
 use common\models\Comment;
 use common\models\PostModel;
@@ -82,9 +83,14 @@ class SiteController extends Controller
 
         $all_comments = Comment::find()->all();
 
+        $carousel = Carousel::find()->all();
 
-
-        return $this->render('index',["category" => $category,"post"=>$post, "all_comments" => $all_comments]);
+        return $this->render('index',[
+            "category" => $category,
+            "post"=>$post,
+            "all_comments" => $all_comments,
+            "carousel"=>$carousel
+        ]);
     }
 
     /**
